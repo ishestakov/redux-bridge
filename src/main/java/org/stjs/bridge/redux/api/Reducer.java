@@ -1,5 +1,7 @@
 package org.stjs.bridge.redux.api;
 
+import org.stjs.javascript.annotation.JavascriptFunction;
+import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Function2;
 
 /**
@@ -11,5 +13,7 @@ import org.stjs.javascript.functions.Function2;
  * @param <P> the Payload type of expected action object
  * @param <M> The Metadata type of expected action object
  */
+@STJSBridge
+@JavascriptFunction
 public interface Reducer<S, P, M> extends Function2<S, Action<P, M>, S> {
 }

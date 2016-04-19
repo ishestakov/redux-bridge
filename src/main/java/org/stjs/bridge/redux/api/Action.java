@@ -22,7 +22,7 @@ import org.stjs.javascript.annotation.SyntheticType;
  */
 
 @SyntheticType
-public final class Action<P, M> {
+public class Action<P, M> {
 	/**
 	 * The type of an action identifies to the consumer the nature of the action that has occurred.
 	 * Two actions with the same type MUST be strictly equivalent (using ===)

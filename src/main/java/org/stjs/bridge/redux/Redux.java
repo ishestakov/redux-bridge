@@ -11,7 +11,8 @@ import org.stjs.javascript.functions.Function;
 @SyntheticType
 /**
  * The main entry point to work with reducers.
- */ public final class Redux {
+ */
+public final class Redux {
 
 	/**
 	 * Creates a Redux store that holds the state tree.
@@ -35,6 +36,8 @@ import org.stjs.javascript.functions.Function;
 	 * and subscribe to changes.
 	 */
 	public static native Store createStore(Reducer<?, ?, ?> reducer, Object initialState, Function enhancer);
+
+	public static native Store createStore(Reducer<?, ?, ?> reducer, Object initialState);
 
 	/**
 	 * Turns an object whose values are different reducer functions, into a single
