@@ -7,7 +7,7 @@ import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Function;
 
-@STJSBridge(sources = "js/redux.js")
+@STJSBridge(sources = "webjar:/redux.js")
 @SyntheticType
 /**
  * The main entry point to work with reducers.
