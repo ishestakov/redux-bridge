@@ -12,11 +12,9 @@ import org.stjs.bridge.redux.api.UnsubscribeCallback;
 import org.stjs.javascript.Error;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Callback0;
-import org.stjs.testing.annotation.ScriptsBefore;
 import org.stjs.testing.driver.STJSTestDriverRunner;
 
 @RunWith(STJSTestDriverRunner.class)
-@ScriptsBefore("redux.js")
 public class TestRedux {
 
 	public static final String TEST = "TEST";
