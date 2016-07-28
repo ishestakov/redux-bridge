@@ -29,7 +29,7 @@ public interface Store {
 	 * @param <T>    The type of concrete action to be dispatched.
 	 * @return For convenience, the same action object you dispatched.
 	 */
-	<T extends Action<?, ?>> T dispatch(T action);
+	<T extends Action> T dispatch(T action);
 
 	/**
 	 * Adds a change listener. It will be called any time an action is dispatched,
@@ -68,5 +68,5 @@ public interface Store {
 	 *
 	 * @param nextReducer The reducer for the store to use instead.
 	 */
-	void replaceReducer(Reducer<?, ?, ?> nextReducer);
+	void replaceReducer(ReducerInterface<?, ?, ?> nextReducer);
 }

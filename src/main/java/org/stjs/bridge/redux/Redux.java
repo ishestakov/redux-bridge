@@ -1,8 +1,11 @@
 package org.stjs.bridge.redux;
 
+import org.stjs.bridge.redux.api.Action;
 import org.stjs.bridge.redux.api.Reducer;
+import org.stjs.bridge.redux.api.ReducerInterface;
 import org.stjs.bridge.redux.api.Store;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Function;

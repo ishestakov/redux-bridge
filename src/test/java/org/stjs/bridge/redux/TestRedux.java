@@ -5,18 +5,16 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.stjs.bridge.redux.api.Action;
-import org.stjs.bridge.redux.api.Reducer;
+import org.stjs.bridge.redux.api.FluxStandardAction;
+import org.stjs.bridge.redux.api.ReducerInterface;
 import org.stjs.bridge.redux.api.Store;
 import org.stjs.bridge.redux.api.UnsubscribeCallback;
 import org.stjs.javascript.Error;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Callback0;
-import org.stjs.testing.annotation.ScriptsBefore;
 import org.stjs.testing.driver.STJSTestDriverRunner;
 
 @RunWith(STJSTestDriverRunner.class)
-@ScriptsBefore("redux.js")
 public class TestRedux {
 
 	public static final String TEST = "TEST";
@@ -47,7 +45,7 @@ public class TestRedux {
 	@Test
 	public void testReducers() {
 		Object initialState = new Object();
-		Reducer<TestState, TestActionPayload, Void> testReducer = new TestReducer()::$invoke;
+		ReducerInterface<TestState, TestActionPayload, Void> testReducer = new TestReducer()::$invoke;
 		Store store = Redux.createStore(testReducer, initialState);
 		store.dispatch(new TestAction() {
 			{
@@ -65,7 +63,7 @@ public class TestRedux {
 
 	private static class TestReducer {
 
-		public TestState $invoke(TestState state, Action<TestActionPayload, Void> action) {
+		public TestState $invoke(TestState state, FluxStandardAction<TestActionPayload, Void> action) {
 			switch (action.type) {
 				case TEST:
 					return new TestState() {
@@ -84,7 +82,7 @@ public class TestRedux {
 		public String GREETING;
 	}
 
-	private static class TestAction extends Action<TestActionPayload, Void> {
+	private static class TestAction extends FluxStandardAction<TestActionPayload, Void> {
 
 	}
 
