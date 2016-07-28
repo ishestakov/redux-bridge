@@ -7,8 +7,9 @@ import static org.stjs.javascript.JSCollections.$map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.stjs.bridge.redux.api.Action;
+import org.stjs.bridge.redux.api.FluxStandardAction;
 import org.stjs.bridge.redux.api.Reducer;
+import org.stjs.bridge.redux.api.ReducerInterface;
 import org.stjs.javascript.Error;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
@@ -22,19 +23,19 @@ public class TestCombineReducers {
 	private static final String INITIAL_STATE_1 = "Initial State 1";
 	private static final String INITIAL_STATE_2 = "Initial State 2";
 
-	private Reducer<String, Object, Void> reducer1;
-	private Reducer<String, Object, Void> reducer2;
+	private ReducerInterface<String, Object, Void> reducer1;
+	private ReducerInterface<String, Object, Void> reducer2;
 
 	@Test
 	public void testCombineReducers_checkInitialState() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
+		Map<String, ReducerInterface> reducersMap = $map();
 		reducersMap.$put("plugin1", reducer1);
 		reducersMap.$put("plugin2", reducer2);
 		reducersMap.$put("plugin3", null);
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 
 		assertNotNull(combinedReducer);
 		assertTrue("function".equals(JSGlobal.typeof(combinedReducer)));
@@ -54,11 +55,11 @@ public class TestCombineReducers {
 	public void testCombineReducers_initialStateIsUndefined() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
+		Map<String, ReducerInterface> reducersMap = $map();
 		reducersMap.$put("plugin1", (state, action) -> JSGlobal.undefined);
 		reducersMap.$put("plugin2", (state, action) -> "Not empty state");
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 		combinedReducer.$invoke($map(), createTestAction("INIT", null));
 	}
 
@@ -66,11 +67,11 @@ public class TestCombineReducers {
 	public void testCombineReducers_reducerProducesUndefined() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
+		Map<String, ReducerInterface> reducersMap = $map();
 		reducersMap.$put("plugin1", (state, action) -> "Not empty state");
-		reducersMap.$put("plugin2", new Reducer<Object, Object, Void>() {
+		reducersMap.$put("plugin2", new ReducerInterface<Object, Object, Void>() {
 			@Override
-			public Object $invoke(Object s, Action<Object, Void> action) {
+			public Object $invoke(Object s, FluxStandardAction<Object, Void> action) {
 				if ("TEST_EVENT".equals(action.type)) {
 					return "Not empty";
 				}
@@ -79,7 +80,7 @@ public class TestCombineReducers {
 			}
 		});
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 		combinedReducer.$invoke($map(), createTestAction("INIT", null));
 	}
 
@@ -87,19 +88,16 @@ public class TestCombineReducers {
 	public void testCombineReducers_nextStateProducesUndefined() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
-		reducersMap.$put("plugin2", new Reducer<Object, Object, Void>() {
-			@Override
-			public Object $invoke(Object s, Action<Object, Void> action) {
-				if ("NEXT_STATE".equals(action.type)) {
-					return "Not empty";
-				}
-
-				return JSGlobal.undefined;
+		Map<String, ReducerInterface> reducersMap = $map();
+		ReducerInterface<?, ?, ?> reducerInterface = (state, action) -> {
+			if ("NEXT_STATE".equals(action.type)) {
+				return "Not empty";
 			}
-		});
+			return JSGlobal.undefined;
+		};
+		reducersMap.$put("plugin2", reducerInterface);
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 		combinedReducer.$invoke($map(), createTestAction("NEXT_STATE", null));
 	}
 
@@ -107,10 +105,10 @@ public class TestCombineReducers {
 	public void testCombineReducers_noReducers() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
+		Map<String, ReducerInterface> reducersMap = $map();
 		reducersMap.$put("plugin1", null);
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 		combinedReducer.$invoke($map(), createTestAction("INIT", null));
 		// Produces only log: Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.
 	}
@@ -119,11 +117,11 @@ public class TestCombineReducers {
 	public void testCombineReducers_invokeEventForOneOfTwoReducers() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
+		Map<String, ReducerInterface> reducersMap = $map();
 		reducersMap.$put("plugin1", reducer1);
 		reducersMap.$put("plugin2", reducer2);
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 
 		Map<String, Object> initialState = combinedReducer.$invoke($map(), createTestAction("INIT", null));
 		Map<String, Object> newState = combinedReducer.$invoke(initialState, createTestAction("CREATE", null));
@@ -136,11 +134,11 @@ public class TestCombineReducers {
 	public void testCombineReducers_invokeCommonEventForAllReducers() {
 		createTestReducers();
 
-		Map<String, Reducer> reducersMap = $map();
+		Map<String, ReducerInterface> reducersMap = $map();
 		reducersMap.$put("plugin1", reducer1);
 		reducersMap.$put("plugin2", reducer2);
 
-		Reducer<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
+		ReducerInterface<Map<String, Object>, Object, Void> combinedReducer = Redux.combineReducers(reducersMap);
 
 		Map<String, Object> initialState = combinedReducer.$invoke($map(), createTestAction("INIT", null));
 		Map<String, Object> newState = combinedReducer.$invoke(initialState, createTestAction("COMMON_EVENT", null));
@@ -158,8 +156,8 @@ public class TestCombineReducers {
 		return cnt;
 	}
 
-	private <T> Action<T, Void> createTestAction(String actionType, T actionPayload) {
-		return new Action<T, Void>() {
+	private <T> FluxStandardAction<T, Void> createTestAction(String actionType, T actionPayload) {
+		return new FluxStandardAction<T, Void>() {
 			{
 				this.type = actionType;
 				this.payload = actionPayload;

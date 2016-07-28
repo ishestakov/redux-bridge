@@ -38,9 +38,9 @@ public final class Redux {
 	 * @return A Redux store that lets you read the state, dispatch actions
 	 * and subscribe to changes.
 	 */
-	public static native Store createStore(Reducer<?, ?, ?> reducer, Object initialState, Function enhancer);
+	public static native Store createStore(ReducerInterface<?, ?, ?> reducer, Object initialState, Function enhancer);
 
-	public static native Store createStore(Reducer<?, ?, ?> reducer, Object initialState);
+	public static native Store createStore(ReducerInterface<?, ?, ?> reducer, Object initialState);
 
 	/**
 	 * Turns an object whose values are different reducer functions, into a single
@@ -58,7 +58,7 @@ public final class Redux {
 	 * passed object, and builds a state object with the same shape.
 	 */
 
-	public static native <S, P, M> Reducer<Map<String, S>, P, M> combineReducers(Map<String, Reducer> reducers);
+	public static native <S, P, M> ReducerInterface<Map<String, S>, P, M> combineReducers(Map<String, ReducerInterface> reducers);
 
 	/**
 	 * Turns an object whose values are action creators, into an object with the
