@@ -58,7 +58,7 @@ public final class Redux {
 	 * passed object, and builds a state object with the same shape.
 	 */
 
-	public static native Reducer<?, ?, ?> combineReducers(Map<String, Reducer> reducers);
+	public static native <S, P, M> Reducer<Map<String, S>, P, M> combineReducers(Map<String, Reducer> reducers);
 
 	/**
 	 * Turns an object whose values are action creators, into an object with the
