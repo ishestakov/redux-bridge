@@ -54,6 +54,10 @@ public final class Redux {
 	 *                 undefined for any action. Instead, they should return their initial state
 	 *                 if the state passed to them was undefined, and the current state for any
 	 *                 unrecognized action.
+	 *
+	 * @param <S> The type of the state representation for resulting reducer
+	 * @param <P> The type of the payload of the action for resulting reducer
+	 * @param <M> The type of the metadata of the action for resulting reducer
 	 * @return A reducer function that invokes every reducer inside the
 	 * passed object, and builds a state object with the same shape.
 	 */
@@ -73,6 +77,8 @@ public final class Redux {
 	 *                       syntax. You may also pass a single function.
 	 * @param dispatch       The `dispatch` function available on your Redux
 	 *                       store.
+	 * @param <T> The type of the action creator object
+	 * @param <A> The desired type of the resulting object wrapper
 	 * @return The object mimicking the original object, but with
 	 * every action creator wrapped into the `dispatch` call. If you passed a
 	 * function as `actionCreators`, the return value will also be a single
@@ -91,6 +97,8 @@ public final class Redux {
 	 * as named arguments.
 	 *
 	 * @param middlewares The middleware chain to be applied.
+	 * @param <T> The result of output function payload type
+	 * @param <A> The type of middleware function payload
 	 * @return A store enhancer applying the middleware.
 	 */
 	public static native <T, A> Function<T> applyMiddleware(Function<A>... middlewares);
@@ -101,6 +109,8 @@ public final class Redux {
 	 * the resulting composite function.
 	 *
 	 * @param funcs The functions to compose.
+	 * @param <T> The type of functions argument
+	 * @param <A> The type of the resulting function argument.
 	 * @return A function obtained by composing the argument functions
 	 * from right to left. For example, compose(f, g, h) is identical to doing
 	 * (...args) => f(g(h(...args))).

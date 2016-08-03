@@ -5,7 +5,8 @@ import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Function2;
 
 /**
- * The reducer interface. The reducer should be a pure function (it shouldn't mutate the objects that it receives as arguments.
+ * The reducer interface. The reducer should be <a href="https://en.wikipedia.org/wiki/Pure_function">a pure function</a> (it shouldn't mutate
+ * the objects that it receives as arguments.
  * Reducer should always return a state. If no state mutations required then the original state.
  * If State passed to reducer is null or undefined the initial state for this reducer should be returned.
  *
