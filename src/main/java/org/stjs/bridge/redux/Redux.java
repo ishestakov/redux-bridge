@@ -112,8 +112,7 @@ public final class Redux {
 	 * @param <T> The type of functions argument
 	 * @param <A> The type of the resulting function argument.
 	 * @return A function obtained by composing the argument functions
-	 * from right to left. For example, compose(f, g, h) is identical to doing
-	 * (...args) => f(g(h(...args))).
+	 * from right to left. For example, compose(f, g, h) is identical to doing <pre>(...args) => f(g(h(...args)))</pre>
 	 */
 	public static native <T, A> Function<T> compose(Function<A>... funcs);
 }

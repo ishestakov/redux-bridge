@@ -59,6 +59,7 @@ public interface Store {
 	/**
 	 * Reads the state tree managed by the store.
 	 *
+	 * @param <T> the type of global state.
 	 * @return The current state tree of your application.
 	 */
 	<T> T getState();
